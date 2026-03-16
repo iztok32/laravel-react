@@ -10,13 +10,16 @@ import {
     FieldGroup,
     FieldLabel,
 } from '@/Components/ui/field';
+import { useTranslation } from "@/lib/i18n";
+import LanguageSwitcher from "@/Components/LanguageSwitcher";
 
-export default function ForgotPassword({ status }) {
+export default function ForgotPassword({ status }: { status?: string }) {
+    const { t } = useTranslation();
     const { data, setData, post, processing, errors } = useForm({
         email: '',
     });
 
-    const submit = (e) => {
+    const submit = (e: React.FormEvent) => {
         e.preventDefault();
 
         post(route('password.email'));
@@ -24,7 +27,10 @@ export default function ForgotPassword({ status }) {
 
     return (
         <div className="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10 relative">
-            <Head title="Forgot Password" />
+            <div className="absolute top-4 right-4">
+                <LanguageSwitcher />
+            </div>
+            <Head title={t('Forgot Password')} />
 
             <div className="w-full max-w-sm md:max-w-3xl flex flex-col gap-6">
                 <Card className="overflow-hidden p-0 shadow-lg">
@@ -32,10 +38,9 @@ export default function ForgotPassword({ status }) {
                         <form className="p-6 md:p-8" onSubmit={submit}>
                             <FieldGroup>
                                 <div className="flex flex-col items-center gap-2 text-center">
-                                    <h1 className="text-2xl font-bold">Reset Password</h1>
+                                    <h1 className="text-2xl font-bold">{t('Reset Password')}</h1>
                                     <p className="text-balance text-muted-foreground text-sm">
-                                        Forgot your password? No problem. Just let us know your email
-                                        address and we will email you a password reset link.
+                                        {t('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.')}
                                     </p>
                                 </div>
 
@@ -46,7 +51,7 @@ export default function ForgotPassword({ status }) {
                                 ) : (
                                     <>
                                         <Field>
-                                            <FieldLabel htmlFor="email">Email address</FieldLabel>
+                                            <FieldLabel htmlFor="email">{t('Email')}</FieldLabel>
                                             <Input
                                                 id="email"
                                                 type="email"
@@ -56,23 +61,21 @@ export default function ForgotPassword({ status }) {
                                                 onChange={(e) => setData('email', e.target.value)}
                                                 required
                                                 disabled={processing}
-                                                isFocused={true}
                                             />
                                             <InputError message={errors.email} className="mt-2 text-center" />
                                         </Field>
 
                                         <Field>
                                             <Button type="submit" disabled={processing} className="w-full">
-                                                {processing ? 'Sending...' : 'Email Password Reset Link'}
+                                                {processing ? t('Sending...') : t('Email Password Reset Link')}
                                             </Button>
                                         </Field>
                                     </>
                                 )}
 
                                 <FieldDescription className="text-center mt-4">
-                                    Remembered your password?{' '}
-                                    <Link href={route('login')} className="underline underline-offset-4 hover:text-primary">
-                                        Sign in
+                                    {t('Already have an account?')} <Link href={route('login')} className="underline underline-offset-4 hover:text-primary">
+                                        {t('Sign in')}
                                     </Link>
                                 </FieldDescription>
                             </FieldGroup>
@@ -89,8 +92,8 @@ export default function ForgotPassword({ status }) {
                 </Card>
 
                 <div className="px-6 text-center text-sm text-balance text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-                    By clicking continue, you agree to our <a href="#">Terms of Service</a>{' '}
-                    and <a href="#">Privacy Policy</a>.
+                    {t('By clicking continue, you agree to our')} <a href="#">{t('Terms of Service')}</a>{' '}
+                    {t('and')} <a href="#">{t('Privacy Policy')}</a>.
                 </div>
             </div>
         </div>

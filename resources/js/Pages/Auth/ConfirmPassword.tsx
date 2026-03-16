@@ -9,13 +9,16 @@ import {
     FieldGroup,
     FieldLabel,
 } from '@/Components/ui/field';
+import { useTranslation } from "@/lib/i18n";
+import LanguageSwitcher from "@/Components/LanguageSwitcher";
 
 export default function ConfirmPassword() {
+    const { t } = useTranslation();
     const { data, setData, post, processing, errors, reset } = useForm({
         password: '',
     });
 
-    const submit = (e) => {
+    const submit = (e: React.FormEvent) => {
         e.preventDefault();
 
         post(route('password.confirm'), {
@@ -25,7 +28,10 @@ export default function ConfirmPassword() {
 
     return (
         <div className="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10 relative">
-            <Head title="Confirm Password" />
+            <div className="absolute top-4 right-4">
+                <LanguageSwitcher />
+            </div>
+            <Head title={t('Confirm Password')} />
 
             <div className="w-full max-w-sm md:max-w-3xl flex flex-col gap-6">
                 <Card className="overflow-hidden p-0 shadow-lg">
@@ -33,15 +39,14 @@ export default function ConfirmPassword() {
                         <form className="p-6 md:p-8" onSubmit={submit}>
                             <FieldGroup>
                                 <div className="flex flex-col items-center gap-2 text-center">
-                                    <h1 className="text-2xl font-bold">Confirm Password</h1>
+                                    <h1 className="text-2xl font-bold">{t('Confirm Password')}</h1>
                                     <p className="text-balance text-muted-foreground text-sm">
-                                        This is a secure area of the application. Please confirm your
-                                        password before continuing.
+                                        {t('This is a secure area of the application. Please confirm your password before continuing.')}
                                     </p>
                                 </div>
 
                                 <Field>
-                                    <FieldLabel htmlFor="password">Password</FieldLabel>
+                                    <FieldLabel htmlFor="password">{t('Password')}</FieldLabel>
                                     <Input
                                         id="password"
                                         type="password"
@@ -50,14 +55,13 @@ export default function ConfirmPassword() {
                                         onChange={(e) => setData('password', e.target.value)}
                                         required
                                         disabled={processing}
-                                        isFocused={true}
                                     />
                                     <InputError message={errors.password} className="mt-2 text-center" />
                                 </Field>
 
                                 <Field>
                                     <Button type="submit" disabled={processing} className="w-full">
-                                        {processing ? 'Confirming...' : 'Confirm'}
+                                        {processing ? t('Confirming...') : t('Confirm')}
                                     </Button>
                                 </Field>
                             </FieldGroup>
@@ -74,8 +78,8 @@ export default function ConfirmPassword() {
                 </Card>
 
                 <div className="px-6 text-center text-sm text-balance text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-                    By clicking continue, you agree to our <a href="#">Terms of Service</a>{' '}
-                    and <a href="#">Privacy Policy</a>.
+                    {t('By clicking continue, you agree to our')} <a href="#">{t('Terms of Service')}</a>{' '}
+                    {t('and')} <a href="#">{t('Privacy Policy')}</a>.
                 </div>
             </div>
         </div>

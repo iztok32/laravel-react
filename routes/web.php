@@ -25,3 +25,5 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::post('/locale', \App\Http\Controllers\LocaleController::class)->name('locale.update');

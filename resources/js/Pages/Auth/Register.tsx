@@ -11,8 +11,11 @@ import {
     FieldSeparator,
 } from "@/Components/ui/field"
 import InputError from '@/Components/InputError';
+import { useTranslation } from "@/lib/i18n";
+import LanguageSwitcher from "@/Components/LanguageSwitcher";
 
 export default function Register() {
+    const { t } = useTranslation();
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
@@ -20,7 +23,7 @@ export default function Register() {
         password_confirmation: '',
     });
 
-    const submit = (e) => {
+    const submit = (e: React.FormEvent) => {
         e.preventDefault();
 
         post(route('register'), {
@@ -30,21 +33,24 @@ export default function Register() {
 
     return (
         <div className="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10 relative">
-            <Head title="Register" />
+            <div className="absolute top-4 right-4">
+                <LanguageSwitcher />
+            </div>
+            <Head title={t('Register')} />
             <div className="w-full max-w-sm md:max-w-4xl flex flex-col gap-6">
                 <Card className="overflow-hidden p-0 shadow-lg">
                     <CardContent className="grid p-0 md:grid-cols-2">
                         <form className="p-6 md:p-8" onSubmit={submit}>
                             <FieldGroup>
                                 <div className="flex flex-col items-center gap-2 text-center">
-                                    <h1 className="text-2xl font-bold">Create an account</h1>
+                                    <h1 className="text-2xl font-bold">{t('Create an account')}</h1>
                                     <p className="text-sm text-balance text-muted-foreground">
-                                        Enter your details to create your account
+                                        {t('Enter your details to create your account')}
                                     </p>
                                 </div>
 
                                 <Field>
-                                    <FieldLabel htmlFor="name">Name</FieldLabel>
+                                    <FieldLabel htmlFor="name">{t('Name')}</FieldLabel>
                                     <Input
                                         id="name"
                                         name="name"
@@ -60,7 +66,7 @@ export default function Register() {
                                 </Field>
 
                                 <Field>
-                                    <FieldLabel htmlFor="email">Email</FieldLabel>
+                                    <FieldLabel htmlFor="email">{t('Email')}</FieldLabel>
                                     <Input
                                         id="email"
                                         name="email"
@@ -74,14 +80,14 @@ export default function Register() {
                                     />
                                     <InputError message={errors.email} className="mt-2" />
                                     <FieldDescription>
-                                        We will send you a confirmation email.
+                                        {t('We will send you a confirmation email.')}
                                     </FieldDescription>
                                 </Field>
 
                                 <Field>
                                     <div className="grid grid-cols-2 gap-4">
                                         <Field>
-                                            <FieldLabel htmlFor="password">Password</FieldLabel>
+                                            <FieldLabel htmlFor="password">{t('Password')}</FieldLabel>
                                             <Input
                                                 id="password"
                                                 name="password"
@@ -95,7 +101,7 @@ export default function Register() {
                                             <InputError message={errors.password} className="mt-2" />
                                         </Field>
                                         <Field>
-                                            <FieldLabel htmlFor="password_confirmation">Confirm Password</FieldLabel>
+                                            <FieldLabel htmlFor="password_confirmation">{t('Confirm Password')}</FieldLabel>
                                             <Input
                                                 id="password_confirmation"
                                                 name="password_confirmation"
@@ -110,18 +116,18 @@ export default function Register() {
                                         </Field>
                                     </div>
                                     <FieldDescription>
-                                        Must be at least 8 characters long.
+                                        {t('Must be at least 8 characters long.')}
                                     </FieldDescription>
                                 </Field>
 
                                 <Field>
                                     <Button type="submit" className="w-full" disabled={processing}>
-                                        {processing ? 'Creating account...' : 'Create account'}
+                                        {processing ? t('Creating account...') : t('Create account')}
                                     </Button>
                                 </Field>
 
                                 <FieldDescription className="text-center">
-                                    Already have an account? <Link href={route('login')} className="underline hover:text-primary">Sign in</Link>
+                                    {t('Already have an account?')} <Link href={route('login')} className="underline hover:text-primary">{t('Sign in')}</Link>
                                 </FieldDescription>
                             </FieldGroup>
                         </form>
@@ -135,8 +141,8 @@ export default function Register() {
                     </CardContent>
                 </Card>
                 <div className="px-6 text-center text-sm text-balance text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-                    By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-                    and <a href="#">Privacy Policy</a>.
+                    {t('By clicking continue, you agree to our')} <a href="#">{t('Terms of Service')}</a>{" "}
+                    {t('and')} <a href="#">{t('Privacy Policy')}</a>.
                 </div>
             </div>
         </div>

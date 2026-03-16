@@ -8,11 +8,14 @@ import {
     FieldDescription,
     FieldGroup,
 } from '@/Components/ui/field';
+import { useTranslation } from "@/lib/i18n";
+import LanguageSwitcher from "@/Components/LanguageSwitcher";
 
-export default function VerifyEmail({ status }) {
+export default function VerifyEmail({ status }: { status?: string }) {
+    const { t } = useTranslation();
     const { post, processing } = useForm({});
 
-    const submit = (e) => {
+    const submit = (e: React.FormEvent) => {
         e.preventDefault();
 
         post(route('verification.send'));
@@ -20,7 +23,10 @@ export default function VerifyEmail({ status }) {
 
     return (
         <div className="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10 relative">
-            <Head title="Email Verification" />
+            <div className="absolute top-4 right-4">
+                <LanguageSwitcher />
+            </div>
+            <Head title={t('Email Verification')} />
 
             <div className="w-full max-w-sm md:max-w-3xl flex flex-col gap-6">
                 <Card className="overflow-hidden p-0 shadow-lg">
@@ -28,25 +34,21 @@ export default function VerifyEmail({ status }) {
                         <form className="p-6 md:p-8" onSubmit={submit}>
                             <FieldGroup>
                                 <div className="flex flex-col items-center gap-2 text-center">
-                                    <h1 className="text-2xl font-bold">Verify Email</h1>
+                                    <h1 className="text-2xl font-bold">{t('Verify Email')}</h1>
                                     <p className="text-balance text-muted-foreground text-sm">
-                                        Thanks for signing up! Before getting started, could you verify
-                                        your email address by clicking on the link we just emailed to
-                                        you? If you didn't receive the email, we will gladly send you
-                                        another.
+                                        {t("Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.")}
                                     </p>
                                 </div>
 
                                 {status === 'verification-link-sent' && (
                                     <div className="rounded-lg bg-green-50s border border-green-200 p-4 text-center text-sm text-green-600 font-medium">
-                                        A new verification link has been sent to the email address
-                                        you provided during registration.
+                                        {t('A new verification link has been sent to the email address you provided during registration.')}
                                     </div>
                                 )}
 
                                 <Field>
                                     <Button type="submit" disabled={processing} className="w-full">
-                                        {processing ? 'Sending...' : 'Resend Verification Email'}
+                                        {processing ? t('Sending...') : t('Resend Verification Email')}
                                     </Button>
                                 </Field>
 
@@ -57,7 +59,7 @@ export default function VerifyEmail({ status }) {
                                         as="button"
                                         className="underline underline-offset-4 hover:text-primary"
                                     >
-                                        Log Out
+                                        {t('Log Out')}
                                     </Link>
                                 </FieldDescription>
                             </FieldGroup>
@@ -74,8 +76,8 @@ export default function VerifyEmail({ status }) {
                 </Card>
 
                 <div className="px-6 text-center text-sm text-balance text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-                    By clicking continue, you agree to our <a href="#">Terms of Service</a>{' '}
-                    and <a href="#">Privacy Policy</a>.
+                    {t('By clicking continue, you agree to our')} <a href="#">{t('Terms of Service')}</a>{' '}
+                    {t('and')} <a href="#">{t('Privacy Policy')}</a>.
                 </div>
             </div>
         </div>

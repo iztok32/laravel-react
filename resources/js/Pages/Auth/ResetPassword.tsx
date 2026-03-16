@@ -10,8 +10,11 @@ import {
     FieldGroup,
     FieldLabel,
 } from '@/Components/ui/field';
+import { useTranslation } from "@/lib/i18n";
+import LanguageSwitcher from "@/Components/LanguageSwitcher";
 
-export default function ResetPassword({ token, email }) {
+export default function ResetPassword({ token, email }: { token: string, email: string }) {
+    const { t } = useTranslation();
     const { data, setData, post, processing, errors, reset } = useForm({
         token: token,
         email: email,
@@ -19,7 +22,7 @@ export default function ResetPassword({ token, email }) {
         password_confirmation: '',
     });
 
-    const submit = (e) => {
+    const submit = (e: React.FormEvent) => {
         e.preventDefault();
 
         post(route('password.store'), {
@@ -29,7 +32,10 @@ export default function ResetPassword({ token, email }) {
 
     return (
         <div className="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10 relative">
-            <Head title="Reset Password" />
+            <div className="absolute top-4 right-4">
+                <LanguageSwitcher />
+            </div>
+            <Head title={t('Reset Password')} />
 
             <div className="w-full max-w-sm md:max-w-3xl flex flex-col gap-6">
                 <Card className="overflow-hidden p-0 shadow-lg">
@@ -37,14 +43,14 @@ export default function ResetPassword({ token, email }) {
                         <form className="p-6 md:p-8" onSubmit={submit}>
                             <FieldGroup>
                                 <div className="flex flex-col items-center gap-2 text-center">
-                                    <h1 className="text-2xl font-bold">Create New Password</h1>
+                                    <h1 className="text-2xl font-bold">{t('Create New Password')}</h1>
                                     <p className="text-balance text-muted-foreground text-sm">
-                                        Your new password must be different from previously used passwords.
+                                        {t('Your new password must be different from previously used passwords.')}
                                     </p>
                                 </div>
 
                                 <Field>
-                                    <FieldLabel htmlFor="email">Email address</FieldLabel>
+                                    <FieldLabel htmlFor="email">{t('Email')}</FieldLabel>
                                     <Input
                                         id="email"
                                         type="email"
@@ -59,7 +65,7 @@ export default function ResetPassword({ token, email }) {
                                 </Field>
 
                                 <Field>
-                                    <FieldLabel htmlFor="password">Password</FieldLabel>
+                                    <FieldLabel htmlFor="password">{t('Password')}</FieldLabel>
                                     <Input
                                         id="password"
                                         type="password"
@@ -68,15 +74,14 @@ export default function ResetPassword({ token, email }) {
                                         onChange={(e) => setData('password', e.target.value)}
                                         required
                                         disabled={processing}
-                                        isFocused={true}
                                         autoComplete="new-password"
                                     />
-                                    <FieldDescription>Must be at least 8 characters long.</FieldDescription>
+                                    <FieldDescription>{t('Must be at least 8 characters long.')}</FieldDescription>
                                     <InputError message={errors.password} className="mt-2 text-center" />
                                 </Field>
 
                                 <Field>
-                                    <FieldLabel htmlFor="password_confirmation">Confirm Password</FieldLabel>
+                                    <FieldLabel htmlFor="password_confirmation">{t('Confirm Password')}</FieldLabel>
                                     <Input
                                         id="password_confirmation"
                                         type="password"
@@ -92,13 +97,13 @@ export default function ResetPassword({ token, email }) {
 
                                 <Field>
                                     <Button type="submit" disabled={processing} className="w-full">
-                                        {processing ? 'Resetting password...' : 'Reset Password'}
+                                        {processing ? t('Resetting password...') : t('Reset Password')}
                                     </Button>
                                 </Field>
                                 
                                 <FieldDescription className="text-center mt-4">
                                     <Link href={route('login')} className="underline underline-offset-4 hover:text-primary">
-                                        Back to login
+                                        {t('Back to login')}
                                     </Link>
                                 </FieldDescription>
                             </FieldGroup>
@@ -115,8 +120,8 @@ export default function ResetPassword({ token, email }) {
                 </Card>
 
                 <div className="px-6 text-center text-sm text-balance text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-                    By clicking continue, you agree to our <a href="#">Terms of Service</a>{' '}
-                    and <a href="#">Privacy Policy</a>.
+                    {t('By clicking continue, you agree to our')} <a href="#">{t('Terms of Service')}</a>{' '}
+                    {t('and')} <a href="#">{t('Privacy Policy')}</a>.
                 </div>
             </div>
         </div>

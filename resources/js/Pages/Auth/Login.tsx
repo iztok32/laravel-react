@@ -14,15 +14,18 @@ import {
   FieldSeparator,
 } from "@/Components/ui/field"
 import InputError from '@/Components/InputError';
+import { useTranslation } from "@/lib/i18n";
+import LanguageSwitcher from "@/Components/LanguageSwitcher";
 
-export default function Login({ status, canResetPassword }) {
+export default function Login({ status, canResetPassword }: { status?: string, canResetPassword?: boolean }) {
+  const { t } = useTranslation();
   const { data, setData, post, processing, errors, reset } = useForm({
     email: '',
     password: '',
     remember: false,
   });
 
-  const submit = (e) => {
+  const submit = (e: React.FormEvent) => {
     e.preventDefault();
 
     post(route('login'), {
@@ -31,8 +34,11 @@ export default function Login({ status, canResetPassword }) {
   };
 
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10">
-      <Head title="Log in" />
+    <div className="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10 relative">
+      <div className="absolute top-4 right-4">
+        <LanguageSwitcher />
+      </div>
+      <Head title={t('Log in')} />
       <div className="w-full max-w-sm md:max-w-4xl">
         <div className={cn("flex flex-col gap-6")}>
           <Card className="overflow-hidden p-0">
@@ -40,9 +46,9 @@ export default function Login({ status, canResetPassword }) {
               <form className="p-6 md:p-8" onSubmit={submit}>
                 <FieldGroup>
                   <div className="flex flex-col items-center gap-2 text-center">
-                    <h1 className="text-2xl font-bold">Welcome back</h1>
+                    <h1 className="text-2xl font-bold">{t('Welcome back')}</h1>
                     <p className="text-balance text-muted-foreground">
-                      Login to your account
+                      {t('Login to your account')}
                     </p>
                   </div>
 
@@ -53,7 +59,7 @@ export default function Login({ status, canResetPassword }) {
                   )}
 
                   <Field>
-                    <FieldLabel htmlFor="email">Email</FieldLabel>
+                    <FieldLabel htmlFor="email">{t('Email')}</FieldLabel>
                     <Input
                       id="email"
                       name="email"
@@ -69,13 +75,13 @@ export default function Login({ status, canResetPassword }) {
                   </Field>
                   <Field>
                     <div className="flex items-center">
-                      <FieldLabel htmlFor="password">Password</FieldLabel>
+                      <FieldLabel htmlFor="password">{t('Password')}</FieldLabel>
                       {canResetPassword && (
                         <Link
                           href={route('password.request')}
                           className="ml-auto text-sm underline-offset-2 hover:underline"
                         >
-                          Forgot your password?
+                          {t('Forgot your password?')}
                         </Link>
                       )}
                     </div>
@@ -104,19 +110,19 @@ export default function Login({ status, canResetPassword }) {
                         className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
                       />
                       <span className="ms-2 text-sm text-gray-600">
-                        Remember me
+                        {t('Remember me')}
                       </span>
                     </label>
                   </div>
 
                   <Field>
                     <Button type="submit" className="w-full" disabled={processing}>
-                      {processing ? 'Logging in...' : 'Login'}
+                      {processing ? t('Logging in...') : t('Log in')}
                     </Button>
                   </Field>
 
                   <FieldDescription className="text-center">
-                    Don&apos;t have an account? <Link href={route('register')} className="underline hover:text-primary">Sign up</Link>
+                    {t("Don't have an account?")} <Link href={route('register')} className="underline hover:text-primary">{t('Sign up')}</Link>
                   </FieldDescription>
                 </FieldGroup>
               </form>
@@ -130,8 +136,8 @@ export default function Login({ status, canResetPassword }) {
             </CardContent>
           </Card>
           <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-            By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-            and <a href="#">Privacy Policy</a>.
+            {t('By clicking continue, you agree to our')} <a href="#">{t('Terms of Service')}</a>{" "}
+            {t('and')} <a href="#">{t('Privacy Policy')}</a>.
           </div>
         </div>
       </div>
