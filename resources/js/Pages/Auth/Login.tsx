@@ -15,7 +15,7 @@ import {
 } from "@/Components/ui/field"
 import InputError from '@/Components/InputError';
 import { useTranslation } from "@/lib/i18n";
-import LanguageSwitcher from "@/Components/LanguageSwitcher";
+import GuestLayout from "@/Layouts/GuestLayout";
 
 export default function Login({ status, canResetPassword }: { status?: string, canResetPassword?: boolean }) {
   const { t } = useTranslation();
@@ -34,15 +34,11 @@ export default function Login({ status, canResetPassword }: { status?: string, c
   };
 
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10 relative">
-      <div className="absolute top-4 right-4">
-        <LanguageSwitcher />
-      </div>
+    <GuestLayout>
       <Head title={t('Log in')} />
-      <div className="w-full max-w-sm md:max-w-4xl">
-        <div className={cn("flex flex-col gap-6")}>
-          <Card className="overflow-hidden p-0">
-            <CardContent className="grid p-0 md:grid-cols-2 shadow-lg">
+      <div className={cn("flex flex-col gap-6")}>
+          <Card className="overflow-hidden p-0 dark:bg-card">
+            <CardContent className="grid p-0 md:grid-cols-2 shadow-lg dark:bg-background">
               <form className="p-6 md:p-8" onSubmit={submit}>
                 <FieldGroup>
                   <div className="flex flex-col items-center gap-2 text-center">
@@ -140,7 +136,6 @@ export default function Login({ status, canResetPassword }: { status?: string, c
             {t('and')} <a href="#">{t('Privacy Policy')}</a>.
           </div>
         </div>
-      </div>
-    </div>
+      </GuestLayout>
   );
 }

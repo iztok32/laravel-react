@@ -12,7 +12,7 @@ import {
 } from "@/Components/ui/field"
 import InputError from '@/Components/InputError';
 import { useTranslation } from "@/lib/i18n";
-import LanguageSwitcher from "@/Components/LanguageSwitcher";
+import GuestLayout from "@/Layouts/GuestLayout";
 
 export default function Register() {
     const { t } = useTranslation();
@@ -32,14 +32,11 @@ export default function Register() {
     };
 
     return (
-        <div className="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10 relative">
-            <div className="absolute top-4 right-4">
-                <LanguageSwitcher />
-            </div>
+        <GuestLayout>
             <Head title={t('Register')} />
-            <div className="w-full max-w-sm md:max-w-4xl flex flex-col gap-6">
-                <Card className="overflow-hidden p-0 shadow-lg">
-                    <CardContent className="grid p-0 md:grid-cols-2">
+            <div className="flex flex-col gap-6">
+                <Card className="overflow-hidden p-0 shadow-lg dark:bg-card">
+                    <CardContent className="grid p-0 md:grid-cols-2 dark:bg-background">
                         <form className="p-6 md:p-8" onSubmit={submit}>
                             <FieldGroup>
                                 <div className="flex flex-col items-center gap-2 text-center">
@@ -144,7 +141,7 @@ export default function Register() {
                     {t('By clicking continue, you agree to our')} <a href="#">{t('Terms of Service')}</a>{" "}
                     {t('and')} <a href="#">{t('Privacy Policy')}</a>.
                 </div>
-            </div>
-        </div>
+                </div>
+        </GuestLayout>
     );
 }
