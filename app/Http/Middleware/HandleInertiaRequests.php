@@ -30,19 +30,47 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+        
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user ? array_merge($user->toArray(), [
+                    'permissions' => $user->permissions,
+                ]) : null,
             ],
             'locale' => app()->getLocale(),
             'availableLocales' => config('app.available_locales'),
             'navigation' => [
-                'main' => NavigationItem::where('type', 'main')->whereNull('parent_id')->where('is_active', true)->with(['children' => function($query) {
-                    $query->where('is_active', true)->orderBy('sort_order');
-                }])->orderBy('sort_order')->get(),
-                'teams' => NavigationItem::where('type', 'team')->where('is_active', true)->orderBy('sort_order')->get(),
-                'projects' => NavigationItem::where('type', 'project')->where('is_active', true)->orderBy('sort_order')->get(),
+                'main' => NavigationItem::where('type', 'main')
+                    ->whereNull('parent_id')
+                    ->where('is_active', true)
+                    ->when($user, function ($query) use ($user) {
+                        $query->where(function ($q) use ($user) {
+                            $q->whereNull('permission')
+                              ->orWhereIn('permission', $user->permissions);
+                        });
+                    })
+                    ->with(['children' => function($query) use ($user) {
+                        $query->where('is_active', true)
+                            ->when($user, function ($q) use ($user) {
+                                $q->where(function ($sq) use ($user) {
+                                    $sq->whereNull('permission')
+                                       ->orWhereIn('permission', $user->permissions);
+                                });
+                            })
+                            ->orderBy('sort_order');
+                    }])
+                    ->orderBy('sort_order')
+                    ->get(),
+                'teams' => NavigationItem::where('type', 'team')
+                    ->where('is_active', true)
+                    ->orderBy('sort_order')
+                    ->get(),
+                'projects' => NavigationItem::where('type', 'project')
+                    ->where('is_active', true)
+                    ->orderBy('sort_order')
+                    ->get(),
             ],
             'translations' => array_merge(
                 is_file(base_path("lang/".app()->getLocale().".json")) 

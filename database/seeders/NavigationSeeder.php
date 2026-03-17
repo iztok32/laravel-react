@@ -41,33 +41,13 @@ class NavigationSeeder extends Seeder
             'title_key' => 'Playground',
             'icon' => 'SquareTerminal',
             'sort_order' => 1,
+            'permission' => 'dashboard.view',
         ]);
         $playground->children()->create(['title_key' => 'History', 'url' => '#', 'sort_order' => 1]);
         $playground->children()->create(['title_key' => 'Starred', 'url' => '#', 'sort_order' => 2]);
         $playground->children()->create(['title_key' => 'Settings', 'url' => '#', 'sort_order' => 3]);
 
-        // Main Nav - Models
-        $models = \App\Models\NavigationItem::create([
-            'type' => 'main',
-            'title_key' => 'Models',
-            'icon' => 'Bot',
-            'sort_order' => 2,
-        ]);
-        $models->children()->create(['title_key' => 'Genesis', 'url' => '#', 'sort_order' => 1]);
-        $models->children()->create(['title_key' => 'Explorer', 'url' => '#', 'sort_order' => 2]);
-        $models->children()->create(['title_key' => 'Quantum', 'url' => '#', 'sort_order' => 3]);
-
-        // Main Nav - Documentation
-        $docs = \App\Models\NavigationItem::create([
-            'type' => 'main',
-            'title_key' => 'Documentation',
-            'icon' => 'BookOpen',
-            'sort_order' => 3,
-        ]);
-        $docs->children()->create(['title_key' => 'Introduction', 'url' => '#', 'sort_order' => 1]);
-        $docs->children()->create(['title_key' => 'Get Started', 'url' => '#', 'sort_order' => 2]);
-        $docs->children()->create(['title_key' => 'Tutorials', 'url' => '#', 'sort_order' => 3]);
-        $docs->children()->create(['title_key' => 'Changelog', 'url' => '#', 'sort_order' => 4]);
+        // ... intermediate items ...
 
         // Main Nav - Settings
         $settings = \App\Models\NavigationItem::create([
@@ -75,9 +55,10 @@ class NavigationSeeder extends Seeder
             'title_key' => 'Settings',
             'icon' => 'Settings2',
             'sort_order' => 4,
+            'permission' => 'users.view',
         ]);
         $settings->children()->create(['title_key' => 'General', 'url' => '#', 'sort_order' => 1]);
-        $settings->children()->create(['title_key' => 'Team', 'url' => '#', 'sort_order' => 2]);
+        $settings->children()->create(['title_key' => 'Team', 'url' => '#', 'sort_order' => 2, 'permission' => 'users.edit']);
         $settings->children()->create(['title_key' => 'Billing', 'url' => '#', 'sort_order' => 3]);
         $settings->children()->create(['title_key' => 'Limits', 'url' => '#', 'sort_order' => 4]);
 
