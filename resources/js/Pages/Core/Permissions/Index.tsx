@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/react';
 import { useTranslation } from '@/lib/i18n';
 import { useState } from 'react';
 import { Button } from '@/Components/ui/button';
-import { Plus } from 'lucide-react';
+import { Plus, ChevronsDownUp, ChevronsUpDown } from 'lucide-react';
 import {
     Sheet,
     SheetContent,
@@ -40,6 +40,7 @@ export default function Index({ groupedPermissions, standardPermissions }: Props
     const [isSheetOpen, setIsSheetOpen] = useState(false);
     const [editingPermission, setEditingPermission] = useState<Permission | undefined>(undefined);
     const [selectedModule, setSelectedModule] = useState<string | undefined>(undefined);
+    const [openAccordions, setOpenAccordions] = useState<string[]>([]);
 
     const handleCreate = (module?: string) => {
         setEditingPermission(undefined);
@@ -59,6 +60,22 @@ export default function Index({ groupedPermissions, standardPermissions }: Props
         setSelectedModule(undefined);
     };
 
+    const handleExpandAll = () => {
+        setOpenAccordions(groupedPermissions.map(g => g.module));
+    };
+
+    const handleCollapseAll = () => {
+        setOpenAccordions([]);
+    };
+
+    const handleAccordionChange = (module: string, isOpen: boolean) => {
+        setOpenAccordions(prev =>
+            isOpen
+                ? [...prev, module]
+                : prev.filter(m => m !== module)
+        );
+    };
+
     // Get all unique modules
     const allModules = groupedPermissions.map(g => g.module);
 
@@ -76,10 +93,30 @@ export default function Index({ groupedPermissions, standardPermissions }: Props
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
                         <CardTitle>{t('Module Permissions')}</CardTitle>
-                        <Button onClick={() => handleCreate()} size="sm" className="gap-2">
-                            <Plus className="h-4 w-4" />
-                            {t('Add Custom Permission')}
-                        </Button>
+                        <div className="flex items-center gap-2">
+                            <Button
+                                onClick={handleExpandAll}
+                                size="sm"
+                                variant="outline"
+                                className="h-9 w-9 p-0"
+                                title={t('Expand All')}
+                            >
+                                <ChevronsDownUp className="h-4 w-4" />
+                            </Button>
+                            <Button
+                                onClick={handleCollapseAll}
+                                size="sm"
+                                variant="outline"
+                                className="h-9 w-9 p-0"
+                                title={t('Collapse All')}
+                            >
+                                <ChevronsUpDown className="h-4 w-4" />
+                            </Button>
+                            <Button onClick={() => handleCreate()} size="sm" className="gap-2">
+                                <Plus className="h-4 w-4" />
+                                {t('Add Custom Permission')}
+                            </Button>
+                        </div>
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">
@@ -91,6 +128,8 @@ export default function Index({ groupedPermissions, standardPermissions }: Props
                                         standardPermissions={standardPermissions}
                                         onEdit={handleEdit}
                                         onAddCustom={handleCreate}
+                                        isOpen={openAccordions.includes(moduleData.module)}
+                                        onOpenChange={(isOpen) => handleAccordionChange(moduleData.module, isOpen)}
                                     />
                                 ))
                             ) : (

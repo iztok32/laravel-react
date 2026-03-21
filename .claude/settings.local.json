@@ -1,12 +1,17 @@
 {
   "permissions": {
     "allow": [
-      "Bash(php artisan route:list --path=navigation)",
-      "Bash(php artisan make:migration add_soft_deletes_to_roles_table --table=roles)",
-      "Bash(./vendor/bin/sail artisan make:migration add_soft_deletes_to_roles_table --table=roles)",
-      "Bash(where php)",
-      "Bash(\"C:\\Users\\Iztok\\.config\\herd\\bin\\php.bat\" artisan migrate)",
-      "Bash(\"C:\\Users\\Iztok\\.config\\herd\\bin\\php.bat\" artisan db:table permissions --show)"
+      "Bash(\"C:\\Users\\Iztok\\.config\\herd\\bin\\php.bat\" artisan db:seed --class=UsersModuleSeeder)",
+      "Bash(composer require owen-it/laravel-auditing)",
+      "Bash(where composer)",
+      "Bash(\"C:\\Users\\Iztok\\.config\\herd\\bin\\composer.bat\" require owen-it/laravel-auditing)",
+      "Bash(\"C:\\Users\\Iztok\\.config\\herd\\bin\\php.bat\" artisan vendor:publish --provider=\"OwenIt\\Auditing\\AuditingServiceProvider\" --tag=\"config\")",
+      "Bash(\"C:\\Users\\Iztok\\.config\\herd\\bin\\php.bat\" artisan vendor:publish --tag=\"auditing-config\")",
+      "Bash(\"C:\\Users\\Iztok\\.config\\herd\\bin\\php.bat\" artisan vendor:publish --provider=\"OwenIt\\Auditing\\AuditingServiceProvider\")",
+      "Bash(\"C:\\Users\\Iztok\\.config\\herd\\bin\\php.bat\" artisan auditing:install)",
+      "Bash(\"C:\\Users\\Iztok\\.config\\herd\\bin\\php.bat\" artisan make:migration create_audits_table)",
+      "Bash(\"C:\\Users\\Iztok\\.config\\herd\\bin\\php.bat\" artisan db:seed --class=AuditLogModuleSeeder)",
+      "Bash(\"C:\\Users\\Iztok\\.config\\herd\\bin\\composer.bat\" dump-autoload)"
     ],
     "deny": [],
     "ask": []

@@ -42,9 +42,11 @@ interface Props {
     standardPermissions: string[];
     onEdit: (permission: Permission) => void;
     onAddCustom: (module: string) => void;
+    isOpen: boolean;
+    onOpenChange: (isOpen: boolean) => void;
 }
 
-export default function PermissionCard({ moduleData, standardPermissions, onEdit, onAddCustom }: Props) {
+export default function PermissionCard({ moduleData, standardPermissions, onEdit, onAddCustom, isOpen, onOpenChange }: Props) {
     const { t } = useTranslation();
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
     const [permissionToDelete, setPermissionToDelete] = useState<number | null>(null);
@@ -69,12 +71,21 @@ export default function PermissionCard({ moduleData, standardPermissions, onEdit
         router.post(route('permissions.toggleStandard'), {
             module: moduleData.module,
             action: action,
+        }, {
+            preserveScroll: true,
+            preserveState: true,
         });
     };
 
     return (
         <>
-            <Accordion type="single" collapsible className="border rounded-lg">
+            <Accordion
+                type="single"
+                collapsible
+                className="border rounded-lg"
+                value={isOpen ? moduleData.module : undefined}
+                onValueChange={(value) => onOpenChange(value === moduleData.module)}
+            >
                 <AccordionItem value={moduleData.module} className="border-none">
                     <AccordionTrigger className="px-6 hover:no-underline">
                         <div className="flex items-center justify-between w-full">
@@ -121,7 +132,8 @@ export default function PermissionCard({ moduleData, standardPermissions, onEdit
                                         return (
                                             <div
                                                 key={action}
-                                                className="flex items-center justify-between p-3 rounded-md border bg-card hover:bg-accent/50 transition-colors group"
+                                                onClick={() => handleToggleStandard(action)}
+                                                className="flex items-center justify-between p-3 rounded-md border bg-card hover:bg-accent/50 transition-colors cursor-pointer"
                                             >
                                                 <div className="flex items-center gap-2 flex-1">
                                                     {exists && isActive ? (
@@ -140,21 +152,6 @@ export default function PermissionCard({ moduleData, standardPermissions, onEdit
                                                     <span className="text-sm font-medium capitalize">
                                                         {t(action)}
                                                     </span>
-                                                </div>
-                                                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="icon"
-                                                        onClick={() => handleToggleStandard(action)}
-                                                        className="h-6 w-6"
-                                                        title={exists && isActive ? t('Deactivate') : t('Activate')}
-                                                    >
-                                                        {exists && isActive ? (
-                                                            <X className="h-3.5 w-3.5" />
-                                                        ) : (
-                                                            <Check className="h-3.5 w-3.5" />
-                                                        )}
-                                                    </Button>
                                                 </div>
                                             </div>
                                         );

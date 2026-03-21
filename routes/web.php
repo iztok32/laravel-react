@@ -34,6 +34,15 @@ Route::middleware('auth')->group(function () {
     Route::resource('permissions', \App\Http\Controllers\Core\PermissionsController::class)->except(['create', 'edit', 'show']);
     Route::post('permissions/toggle-standard', [\App\Http\Controllers\Core\PermissionsController::class, 'toggleStandard'])->name('permissions.toggleStandard');
     Route::delete('permissions/delete-standard', [\App\Http\Controllers\Core\PermissionsController::class, 'deleteStandard'])->name('permissions.deleteStandard');
+
+    Route::get('roles-permissions', [\App\Http\Controllers\Core\RolesPermissionsController::class, 'index'])->name('roles-permissions.index');
+    Route::post('roles-permissions/toggle', [\App\Http\Controllers\Core\RolesPermissionsController::class, 'togglePermission'])->name('roles-permissions.toggle');
+
+    Route::resource('users', \App\Http\Controllers\Core\UsersController::class)->except(['create', 'edit', 'show']);
+    Route::post('users/send-password-reset', [\App\Http\Controllers\Core\UsersController::class, 'sendPasswordResetLink'])->name('users.send-password-reset');
+
+    Route::get('audit-log', [\App\Http\Controllers\Core\AuditLogController::class, 'index'])->name('audit-log.index');
+    Route::get('audit-log/{audit}', [\App\Http\Controllers\Core\AuditLogController::class, 'show'])->name('audit-log.show');
 });
 
 require __DIR__.'/auth.php';
