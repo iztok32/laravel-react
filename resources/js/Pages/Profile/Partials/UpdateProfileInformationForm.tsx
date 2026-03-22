@@ -24,6 +24,7 @@ export default function UpdateProfileInformation({
         useForm({
             name: user.name,
             email: user.email,
+            gsm_number: user.gsm_number || '',
         });
 
     const submit = (e) => {
@@ -85,6 +86,24 @@ export default function UpdateProfileInformation({
                     />
                     {errors.email && (
                         <p className="text-sm text-destructive">{errors.email}</p>
+                    )}
+                </div>
+
+                <div className="space-y-2">
+                    <Label htmlFor="gsm_number">{t('GSM Number')}</Label>
+                    <Input
+                        id="gsm_number"
+                        type="tel"
+                        value={data.gsm_number}
+                        onChange={(e) => setData('gsm_number', e.target.value)}
+                        placeholder="+386 XX XXX XXX"
+                        autoComplete="tel"
+                        disabled={!canEdit}
+                        readOnly={!canEdit}
+                        className={!canEdit ? 'cursor-not-allowed opacity-60' : ''}
+                    />
+                    {errors.gsm_number && (
+                        <p className="text-sm text-destructive">{errors.gsm_number}</p>
                     )}
                 </div>
 

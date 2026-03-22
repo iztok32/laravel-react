@@ -26,6 +26,7 @@ class User extends Authenticatable implements AuditableContract
         'email',
         'password',
         'is_active',
+        'gsm_number',
     ];
 
     /**

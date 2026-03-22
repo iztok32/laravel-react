@@ -22,6 +22,7 @@ class UsersController extends Controller
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
+                    'gsm_number' => $user->gsm_number,
                     'is_active' => $user->is_active,
                     'roles' => $user->roles->pluck('name'),
                     'created_at' => $user->created_at,
@@ -42,6 +43,7 @@ class UsersController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'gsm_number' => 'nullable|string|max:20',
             'is_active' => 'boolean',
             'role_id' => 'nullable|exists:roles,id',
         ]);
@@ -73,6 +75,7 @@ class UsersController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'gsm_number' => 'nullable|string|max:20',
             'is_active' => 'boolean',
             'role_id' => 'nullable|exists:roles,id',
         ]);
@@ -80,6 +83,7 @@ class UsersController extends Controller
         $user->update([
             'name' => $validated['name'],
             'email' => $validated['email'],
+            'gsm_number' => $validated['gsm_number'] ?? $user->gsm_number,
             'is_active' => $validated['is_active'] ?? $user->is_active,
         ]);
 

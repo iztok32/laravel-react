@@ -17,6 +17,7 @@ interface User {
     id: number;
     name: string;
     email: string;
+    gsm_number?: string;
     is_active: boolean;
     roles: string[];
 }
@@ -38,6 +39,7 @@ export default function UserForm({ user, roles, onClose }: Props) {
     const { data, setData, post, put, errors, processing, reset } = useForm({
         name: user?.name || '',
         email: user?.email || '',
+        gsm_number: user?.gsm_number || '',
         is_active: user?.is_active ?? true,
         role_id: null as number | null,
     });
@@ -99,6 +101,20 @@ export default function UserForm({ user, roles, onClose }: Props) {
                 />
                 {errors.email && (
                     <p className="text-sm text-destructive">{errors.email}</p>
+                )}
+            </div>
+
+            <div className="space-y-2">
+                <Label htmlFor="gsm_number">{t('GSM Number')}</Label>
+                <Input
+                    id="gsm_number"
+                    type="tel"
+                    value={data.gsm_number}
+                    onChange={(e) => setData('gsm_number', e.target.value)}
+                    placeholder="+386 XX XXX XXX"
+                />
+                {errors.gsm_number && (
+                    <p className="text-sm text-destructive">{errors.gsm_number}</p>
                 )}
             </div>
 
